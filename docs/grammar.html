@@ -405,8 +405,7 @@ ignored:</p>
 <p>You can create case-insensitive string literals by adding an <code>i</code> after the
 string literal:</p>
 <pre><code>cow -&gt; &quot;cow&quot;i # matches CoW, COW, and so on.</code></pre><p>Note that if you are using a lexer, your lexer should use the <code>i</code> flag in its
-regexes instead. That is, if you are using a lexer, you should <em>not</em> use the
-<code>i</code> suffix in nearley.</p>
+regexes instead, and the parser should just reference the token. But if your usecase calls for <code>i</code> in the parser, you may use it - it works.</p>
 <h4 id="ebnf">EBNF</h4>
 <p>nearley supports the <code>*</code>, <code>?</code>, and <code>+</code> operators from
 <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF</a> as shown:</p>
