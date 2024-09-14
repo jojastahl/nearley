@@ -55,20 +55,6 @@ var lexer = moo.states({
     }),
 })
 
-function insensitive(sl) {
-    var s = sl.literal;
-    var result = [];
-    for (var i=0; i<s.length; i++) {
-        var c = s.charAt(i);
-        if (c.toUpperCase() !== c || c.toLowerCase() !== c) {
-            result.push(new RegExp("[" + c.toLowerCase() + c.toUpperCase() + "]"));
-            } else {
-            result.push({literal: c});
-        }
-    }
-    return {subexpression: [{tokens: result, postprocess: function(d) {return d.join(""); }}]};
-}
-
 %}
 @lexer lexer
 
@@ -100,7 +86,7 @@ expr_member ->
       word {% id %}
     | "$" word {% function(d) {return {mixin: d[1]}} %}
     | word "[" _ expressionlist _ "]" {% function(d) {return {macrocall: d[0], args: d[3]}} %}
-    | string "i":? {% function(d) { if (d[1]) {return insensitive(d[0]); } else {return d[0]; } } %}
+    | string "i":? {% function(d) { if (d[1]) {return {literal: d[0].literal, insensitive: true}; } else {return d[0]; } } %}
     | "%" word {% function(d) {return {token: d[1]}} %}
     | charclass {% id %}
     | "(" _ expression+ _ ")" {% function(d) {return {'subexpression': d[2]} ;} %}
